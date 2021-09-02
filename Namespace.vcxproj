@@ -141,9 +141,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="json.h" />
     <ClInclude Include="xml.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="json.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="xml.cpp" />
   </ItemGroup>

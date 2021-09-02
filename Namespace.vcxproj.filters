@@ -18,12 +18,18 @@
     <ClInclude Include="xml.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
+    <ClInclude Include="json.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="xml.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="json.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>

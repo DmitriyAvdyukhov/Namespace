@@ -1,6 +1,7 @@
 #include "xml.h"
 
 using namespace std;
+using namespace xml;
 
 pair<string_view, string_view> Split(string_view line, char by) {
     size_t pos = line.find(by);
@@ -54,10 +55,6 @@ Node LoadNode(istream& input) {
     return root;
 }
 
-Document Load(istream& input) {
-    return Document{ LoadNode(input) };
-}
-
 Node::Node(string name, unordered_map<string, string> attrs)
     : name_(move(name))
     , attrs_(move(attrs)) {
@@ -81,4 +78,9 @@ void Node::AddChild(Node node) {
 
 string_view Node::Name() const {
     return name_;
+}
+
+Document xml::Load(std::istream& input)
+{
+    return Document{ LoadNode(input) };
 }

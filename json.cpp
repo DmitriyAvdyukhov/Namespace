@@ -1,6 +1,7 @@
 #include "json.h"
 
 using namespace std;
+using namespace json;
 
 Node::Node(vector<Node> array)
     : as_array_(move(array))
@@ -126,7 +127,7 @@ Node LoadNode(istream& input)
     }
 }
 
-Document Load(istream& input)
+Document json::Load(std::istream& input)
 {
     return Document{ LoadNode(input) };
 }
