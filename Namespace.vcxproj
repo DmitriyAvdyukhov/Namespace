@@ -141,10 +141,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="ini.h" />
     <ClInclude Include="json.h" />
     <ClInclude Include="xml.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ini.cpp" />
     <ClCompile Include="json.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="xml.cpp" />

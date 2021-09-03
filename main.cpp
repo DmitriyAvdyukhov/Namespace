@@ -1,5 +1,6 @@
 #include "json.h"
 #include "xml.h"
+#include "ini.h"
 
 #include <algorithm>
 #include <fstream>
@@ -7,6 +8,7 @@
 #include <string_view>
 #include <vector>
 #include <fstream>
+#include <cassert>
 
 using namespace std;
 
@@ -92,5 +94,34 @@ int main() {
         const vector<Spending> spendings1 = LoadFromXml(in1);
         cout << "Total "sv << CalculateTotalSpendings(spendings1) << '\n';
         cout << "Most expensive is "sv << FindMostExpensiveCategory(spendings1) << '\n';
+    }
+    {
+        using namespace ini;
+        std::istringstream input{
+            "    \n"
+        "[vegetables]\n"
+        "    potatoes   =    10    \n"
+        "onions=1 \n"
+        "      \n"
+        "cucumbers=12\n"
+        "\n"
+        "[guests] \n"
+        "  guest1_name= Ivan Durak \n"
+        "   guest2_name   =Vasilisa Premudraya   \n"
+        "[guest black list]" };
+        ini::Document doc = ini::Load(input);
+
+        assert(doc.GetSectionCount() == 3);
+        assert((doc.GetSection("vegetables"s)
+            == ini::Section{
+                {"potatoes"s, "10"s},
+                {"onions"s, "1"s},
+                {"cucumbers"s, "12"s},
+            }));
+        assert((doc.GetSection("guests"s)== ini::Section{ {"guest1_name"s, "Ivan Durak"s}, {"guest2_name"s, "Vasilisa Premudraya"s} }));
+        assert((doc.GetSection("dragons"s) == ini::Section{}));
+        assert((doc.GetSection("guest black list"s) == ini::Section{}));
+        doc.AddSection("pets"s) = ini::Section{ {"nasty"s, "rat"s} };
+        assert(doc.GetSectionCount() == 4);
     }
 }
