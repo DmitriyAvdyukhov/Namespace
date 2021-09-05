@@ -34,19 +34,27 @@ ini::Document ini::Load(std::istream& input)
 			{
 				auto pos_key_start = query.find_first_not_of(' ');
 				auto pos_ignor = query.find('=', pos_key_start + 1);
-				key = query.substr(pos_key_start, pos_ignor - pos_key_start);
+				auto pos_key_end = 0;
+				char ch_left = query[pos_ignor - 1] ;
+				
+				ch_left == ' ' ? pos_key_end = query.find_last_not_of(' ', pos_ignor - 1) + 1 : pos_key_end = pos_ignor;
+
+				/*key = query.substr(pos_key_start, pos_ignor - pos_key_start);
 				if (key.back() == ' ')
 				{
-					key = key.substr(0, key.find_last_not_of(' ') + 1 );
-				}
+					 key.resize(key.find_last_not_of(' ') + 1);
+				}*/
 				auto pos_value_start = query.find_first_not_of(' ', pos_ignor + 1);
-				value = query.substr(pos_value_start);
+				auto pos_value_end = 0;
+				query.back() == ' ' ? pos_value_end = query.find_last_not_of(' ') + 1 : pos_value_end = query.back();
+				/*value = query.substr(pos_value_start);
 				if (value.back() == ' ')
 				{
-					value = value.substr(0, value.find_last_not_of(' ') + 1);
-				}
+					 value.resize(value.find_last_not_of(' ') + 1);
+				}*/
 							
-				result.AddSection(name).insert({ key, value });
+				result.AddSection(name).insert({ query.substr(pos_key_start, pos_key_end - pos_key_start),
+					query.substr(pos_value_start, pos_value_end - pos_value_start) });
 			}
 		}
 	}
