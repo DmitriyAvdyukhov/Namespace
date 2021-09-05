@@ -22,4 +22,4 @@ namespace ini
     // определение этой функции должно быть в файле ini.cpp
     Document Load(std::istream& input);
 }
-void CutString(std::string& str);
+

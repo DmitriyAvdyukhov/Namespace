@@ -32,14 +32,20 @@ ini::Document ini::Load(std::istream& input)
 			}
 			else
 			{
-				auto pos = query.find_first_not_of(' ');
-				auto pos_end = query.find('=', pos + 1);
-				key = query.substr(pos, pos_end - pos);
-				CutString(key);				
-				pos = pos_end + 1;
-				pos_end = query.find('\n', pos + 1);
-				value = query.substr(pos, pos_end - pos);
-				CutString(value);				
+				auto pos_key_start = query.find_first_not_of(' ');
+				auto pos_ignor = query.find('=', pos_key_start + 1);
+				key = query.substr(pos_key_start, pos_ignor - pos_key_start);
+				if (key.back() == ' ')
+				{
+					key = key.substr(0, key.find_last_not_of(' ') + 1 );
+				}
+				auto pos_value_start = query.find_first_not_of(' ', pos_ignor + 1);
+				value = query.substr(pos_value_start);
+				if (value.back() == ' ')
+				{
+					value = value.substr(0, value.find_last_not_of(' ') + 1);
+				}
+							
 				result.AddSection(name).insert({ key, value });
 			}
 		}
@@ -68,9 +74,4 @@ std::size_t ini::Document::GetSectionCount() const
 	return  sections_.size();
 }
 
- void CutString(std::string& str)
-{
-	auto pos = str.find_first_not_of(' ');
-	auto pos_end = str.find_last_not_of(' ');	
-	str = str.substr(pos, pos_end - pos + 1);	
-}
+ 
