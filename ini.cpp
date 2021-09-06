@@ -15,10 +15,11 @@ ini::Document ini::Load(std::istream& input)
 		string key;
 		string value;
 		getline(input, query);
-		if (query[0] == '[')
+		if (query.find('[') != query.npos)
 		{
-			auto pos = 1;
-			auto pos_end = query.find(']');
+			query.resize(query.find(']'));
+			auto pos = query.find_first_not_of(' ', query.find('[') + 1);
+			auto pos_end = query.find_last_not_of(' ') + 1;
 			name = query.substr(pos, pos_end - pos);	
 		}
 		else
@@ -33,28 +34,20 @@ ini::Document ini::Load(std::istream& input)
 			else
 			{
 				auto pos_key_start = query.find_first_not_of(' ');
-				auto pos_ignor = query.find('=', pos_key_start + 1);
 				auto pos_key_end = 0;
-				char ch_left = query[pos_ignor - 1] ;
+				auto pos_ignor = query.find('=', pos_key_start + 1);
 				
-				ch_left == ' ' ? pos_key_end = query.find_last_not_of(' ', pos_ignor - 1) + 1 : pos_key_end = pos_ignor;
+				char ch_left = query[pos_ignor - 1];	
 
-				/*key = query.substr(pos_key_start, pos_ignor - pos_key_start);
-				if (key.back() == ' ')
-				{
-					 key.resize(key.find_last_not_of(' ') + 1);
-				}*/
+				ch_left == ' ' ? pos_key_end = query.find_last_not_of(' ', pos_ignor - 1) + 1 : pos_key_end = pos_ignor;	
+
 				auto pos_value_start = query.find_first_not_of(' ', pos_ignor + 1);
 				auto pos_value_end = 0;
-				query.back() == ' ' ? pos_value_end = query.find_last_not_of(' ') + 1 : pos_value_end = query.back();
-				/*value = query.substr(pos_value_start);
-				if (value.back() == ' ')
-				{
-					 value.resize(value.find_last_not_of(' ') + 1);
-				}*/
+
+				query.back() == ' ' ? pos_value_end = query.find_last_not_of(' ') + 1 : pos_value_end = query.back();		
 							
-				result.AddSection(name).insert({ query.substr(pos_key_start, pos_key_end - pos_key_start),
-					query.substr(pos_value_start, pos_value_end - pos_value_start) });
+				result.AddSection(name)[query.substr(pos_key_start, pos_key_end - pos_key_start)] =
+					query.substr(pos_value_start, pos_value_end - pos_value_start);
 			}
 		}
 	}

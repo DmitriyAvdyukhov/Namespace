@@ -99,7 +99,7 @@ int main() {
         using namespace ini;
         std::istringstream input{
             "    \n"
-        "[vegetables]\n"
+        " [  vegetables  ]  \n"
         "    potatoes   =    10    \n"
         "onions=1 \n"
         "      \n"
